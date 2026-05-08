@@ -1,8 +1,8 @@
 #!/bin/bash
-#SBATCH -J Heme_OMP_hybrid_n1_p2
+#SBATCH -J Heme_OMP_hybrid_n1_p3
 #SBATCH -p iris
 #SBATCH -N 1
-#SBATCH -n 2                    # 2 MPI进程（每NUMA节点1个，现在都参与计算）
+#SBATCH -n 3                    # 3 MPI进程：rank0(IO) + rank1,2(计算)
 #SBATCH -t 4:00:00
 #SBATCH -o log_%j.out
 #SBATCH --exclusive
@@ -17,10 +17,8 @@ OUT=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/result/omp_hybrid
 rm -rf $OUT
 
 # ======================== OMP+MPI 混合并行配置 ========================
-# 关键设计（修改后）：
-#   - 2 MPI进程（每NUMA节点1个，现在都参与计算）
-#   - 每个MPI进程内部28个OMP线程（每NUMA 28核）
-#   - rank0也参与计算，同时做I/O和OMP计算
+# 3 MPI进程：1 IO + 2 计算
+# 每个计算进程内部用OMP线程
 
 export OMP_NUM_THREADS=28
 export OMP_PROC_BIND=close
@@ -28,7 +26,7 @@ export OMP_PLACES=slots
 export OMP_STACKSIZE=64M
 
 # Intel MPI 绑定策略
-mpirun -np 2 \
+mpirun -np 3 \
   -genv I_MPI_PIN_DOMAIN=numa \
   -genv I_MPI_PIN_ORDER=compact \
   -genv OMP_NUM_THREADS=28 \

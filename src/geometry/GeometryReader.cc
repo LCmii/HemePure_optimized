@@ -39,7 +39,7 @@ namespace hemelb
 			//  - there's only one processor (so core 0 has to participate)
 
 			// Create our own group, without the root node if we're not running with it.
-			if (ioComm.Size() > 2)
+			if (ioComm.Size() > 1)
 			{
 				participateInTopology = !ioComm.OnIORank();
 
@@ -51,7 +51,6 @@ namespace hemelb
 			}
 			else
 			{
-				// 如果只有2个进程，所有进程都参与计算
 				participateInTopology = true;
 				computeComms = ioComm;
 			}
