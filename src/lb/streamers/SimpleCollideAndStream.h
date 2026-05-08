@@ -11,7 +11,7 @@
 #include "lb/streamers/SimpleCollideAndStreamDelegate.h"
 #include "lb/kernels/BaseKernel.h"
 #include "lb/HFunction.h"
-#include <omp.h>
+//#include <omp.h>  // 临时注释掉OMP
 
 namespace hemelb
 {
@@ -43,7 +43,7 @@ template<bool tDoRayTracing>
 							geometry::LatticeData* latDat,
 							lb::MacroscopicPropertyCache& propertyCache)
 						{
-							#pragma omp parallel for schedule(static)
+							//#pragma omp parallel for schedule(static)  // 临时注释掉OMP
 							for (site_t siteIndex = firstIndex; siteIndex < (firstIndex + siteCount); siteIndex++)
 							{
 								geometry::Site<geometry::LatticeData> site = latDat->GetSite(siteIndex);
