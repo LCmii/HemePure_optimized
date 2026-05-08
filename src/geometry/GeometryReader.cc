@@ -34,20 +34,24 @@ namespace hemelb
 				reporting::Timers &atimings, const net::IOCommunicator& ioComm) :
 			latticeInfo(latticeInfo), hemeLbComms(ioComm), timings(atimings)
 		{
-			// Modified: All ranks participate in computation (including rank0)
-			// rank0 still does I/O, but now also participates in LBM calculation
-			// This enables OMP+MPI hybrid with fewer MPI processes
+			// This rank should participate in the domain decomposition if
+			//  - we're not on core 0 (the only core that might ever not participate)
+			//  - there's only one processor (so core 0 has to participate)
 
-			if (ioComm.Size() > 1)
+			// Create our own group, without the root node if we're not running with it.
+			if (ioComm.Size() > 2)
 			{
-				// 所有进程都参与计算拓扑（包括rank0）
-				participateInTopology = true;
+				participateInTopology = !ioComm.OnIORank();
 
-				// 不再排除rank0，所有进程使用同一个通信器
-				computeComms = ioComm;
+				std::vector<int> lExclusions(1);
+				lExclusions[0] = 0;
+				net::MpiGroup computeGroup = hemeLbComms.Group().Exclude(lExclusions);
+				// Create a communicator just for the domain decomposition.
+				computeComms = ioComm.Create(computeGroup);
 			}
 			else
 			{
+				// 如果只有2个进程，所有进程都参与计算
 				participateInTopology = true;
 				computeComms = ioComm;
 			}

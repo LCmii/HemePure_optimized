@@ -45,8 +45,7 @@ build_src() {
     -DCMAKE_CXX_FLAGS="-qopenmp -xHost -O3 -ip -fno-alias" \
     -DHEMELB_OUTLET_BOUNDARY=LADDIOLET \
     -DHEMELB_WALL_OUTLET_BOUNDARY=LADDIOLETBFL \
-    -DHEMELB_USE_VELOCITY_WEIGHTS_FILE=OFF \
-    -DHEMELB_READING_GROUP_SIZE=0    # 关键修改：设为0后只需要1个进程（不再需要reading group）
+    -DHEMELB_USE_VELOCITY_WEIGHTS_FILE=OFF
 
   make -j8
   cd ../../
