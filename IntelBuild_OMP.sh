@@ -42,7 +42,7 @@ build_src() {
     -DHEMELB_USE_MPI_WIN=OFF \
     -DHEMELB_USE_SSE3=ON \
     -DHEMELB_USE_AVX2=ON \
-    -DCMAKE_CXX_FLAGS="-qopenmp -O3" \
+    -DCMAKE_CXX_FLAGS="-qopenmp -xHost -O3 -ip -fno-alias" \
     -DHEMELB_OUTLET_BOUNDARY=LADDIOLET \
     -DHEMELB_WALL_OUTLET_BOUNDARY=LADDIOLETBFL \
     -DHEMELB_USE_VELOCITY_WEIGHTS_FILE=OFF
@@ -68,7 +68,7 @@ build_benchmark() {
     -DHEMELB_USE_MPI_WIN=OFF \
     -DHEMELB_USE_SSE3=ON \
     -DHEMELB_USE_AVX2=ON \
-    -DCMAKE_CXX_FLAGS="-qopenmp -O3" \
+    -DCMAKE_CXX_FLAGS="-qopenmp -xHost -O3 -ip -fno-alias" \
     -DHEMELB_READING_GROUP_SIZE=0    # 关键修改：设为0后只需要1个进程
 
   make -j8

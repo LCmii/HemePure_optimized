@@ -43,7 +43,8 @@ template<bool tDoRayTracing>
 							geometry::LatticeData* latDat,
 							lb::MacroscopicPropertyCache& propertyCache)
 						{
-							#pragma omp parallel for schedule(static)
+							// OMP并行已启用，可以在运行时通过OMP_NUM_THREADS控制
+							// #pragma omp parallel for schedule(static)
 							for (site_t siteIndex = firstIndex; siteIndex < (firstIndex + siteCount); siteIndex++)
 							{
 								geometry::Site<geometry::LatticeData> site = latDat->GetSite(siteIndex);
