@@ -11,6 +11,7 @@
 #include "lb/streamers/SimpleCollideAndStreamDelegate.h"
 #include "lb/kernels/BaseKernel.h"
 #include "lb/HFunction.h"
+#include <omp.h>
 
 namespace hemelb
 {
@@ -35,13 +36,14 @@ namespace hemelb
 				{
 				}
 
-					template<bool tDoRayTracing>
-						inline void DoStreamAndCollide(const site_t firstIndex,
-								const site_t siteCount,
-								const LbmParameters* lbmParams,
-								geometry::LatticeData* latDat,
-								lb::MacroscopicPropertyCache& propertyCache)
+template<bool tDoRayTracing>
+					inline void DoStreamAndCollide(const site_t firstIndex,
+							const site_t siteCount,
+							const LbmParameters* lbmParams,
+							geometry::LatticeData* latDat,
+							lb::MacroscopicPropertyCache& propertyCache)
 						{
+							#pragma omp parallel for schedule(static)
 							for (site_t siteIndex = firstIndex; siteIndex < (firstIndex + siteCount); siteIndex++)
 							{
 								geometry::Site<geometry::LatticeData> site = latDat->GetSite(siteIndex);
