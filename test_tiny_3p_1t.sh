@@ -10,7 +10,8 @@
 source /global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/HemePure/env.sh
 
 BASE=/global/exafs/users/rdmaworkshop10/lc/HemeLB
-EXE=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/HemePure/src/build_PP_Benchmark/hemepure
+# 使用OMP编译版本（虽然只用1线程）
+EXE=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/HemePure/src/build_OMP_Benchmark/hemepure
 INPUT=$BASE/Bifurcation-TINY/input_PP.xml
 OUT=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/result/test_tiny_3p_1t
 
