@@ -27,10 +27,10 @@ build_dep() {
 }
 
 #=====================
-# 编译主程序（添加OpenMP）
+# 编译主程序（与IntelBuild.sh相同）
 #=====================
 build_src() {
-  echo -e "\n🚀 Building main HemePure with OMP+MPI hybrid..."
+  echo -e "\n🚀 Building main HemePure..."
   cd src
   FOLDER=build_OMP
   rm -rf $FOLDER && mkdir $FOLDER && cd $FOLDER
@@ -38,11 +38,11 @@ build_src() {
   cmake .. \
     -DCMAKE_C_COMPILER=${CC} \
     -DCMAKE_CXX_COMPILER=${CXX} \
-    -DCMAKE_CXX_FLAGS="-qopenmp" \
     -DHEMELB_USE_GMYPLUS=OFF \
     -DHEMELB_USE_MPI_WIN=OFF \
     -DHEMELB_USE_SSE3=ON \
     -DHEMELB_USE_AVX2=ON \
+    -DCMAKE_CXX_FLAGS="-xHost -O3 -ip" \
     -DHEMELB_OUTLET_BOUNDARY=LADDIOLET \
     -DHEMELB_WALL_OUTLET_BOUNDARY=LADDIOLETBFL \
     -DHEMELB_USE_VELOCITY_WEIGHTS_FILE=OFF
@@ -53,10 +53,10 @@ build_src() {
 }
 
 #=====================
-# 编译 Benchmark（添加OpenMP）
+# 编译 Benchmark
 #=====================
 build_benchmark() {
-  echo -e "\n🚀 Building Benchmark with OMP..."
+  echo -e "\n🚀 Building Benchmark..."
   cd src
   FOLDER=build_OMP_Benchmark
   rm -rf $FOLDER && mkdir $FOLDER && cd $FOLDER
@@ -68,8 +68,7 @@ build_benchmark() {
     -DHEMELB_USE_MPI_WIN=OFF \
     -DHEMELB_USE_SSE3=ON \
     -DHEMELB_USE_AVX2=ON \
-    -DCMAKE_CXX_FLAGS="-qopenmp -xHost -O3 -ip -fno-alias" \
-    -DHEMELB_READING_GROUP_SIZE=0    # 关键修改：设为0后只需要1个进程
+    -DCMAKE_CXX_FLAGS="-xHost -O3 -ip"
 
   make -j8
   cd ../../

@@ -10,8 +10,8 @@
 source /global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/HemePure/env.sh
 
 BASE=/global/exafs/users/rdmaworkshop10/lc/HemeLB
-# 使用OMP编译版本
-EXE=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/HemePure/src/build_OMP_Benchmark/hemepure
+# 使用原始IntelBuild编译的版本，通过运行时启用OMP
+EXE=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/HemePure/src/build_PP_Benchmark/hemepure
 INPUT=$BASE/Bifurcation-TINY/input_PP.xml
 OUT=/global/exafs/users/rdmaworkshop10/lc/HemeLB/optimized/result/test_tiny_4p_14t
 
@@ -20,6 +20,7 @@ rm -rf $OUT
 export OMP_NUM_THREADS=14
 export OMP_PROC_BIND=close
 export KMP_AFFINITY=compact,1,0
+export KMP_BLOCKTIME=0
 
 mpirun -np 4 \
   -genv I_MPI_PIN_DOMAIN=numa \
