@@ -2,7 +2,7 @@
 #SBATCH -J Heme_tiny_56p1t
 #SBATCH -p iris
 #SBATCH -N 1
-#SBATCH -n 56                   # 56进程×1线程（基线）
+#SBATCH -n 56                   # 56进程×1线程（标准基线）
 #SBATCH -t 1:00:00
 #SBATCH -o log_%j.out
 #SBATCH --exclusive
@@ -21,5 +21,4 @@ export OMP_NUM_THREADS=1
 mpirun -np 56 \
   -genv I_MPI_PIN_DOMAIN=numa \
   -genv I_MPI_PIN_ORDER=compact \
-  -genv OMP_NUM_THREADS=1 \
   $EXE -in $INPUT -out $OUT
