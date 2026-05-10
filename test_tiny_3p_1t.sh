@@ -2,7 +2,7 @@
 #SBATCH -J Heme_tiny_3p_1t
 #SBATCH -p iris
 #SBATCH -N 1
-#SBATCH -n 3                    # 3进程（原始）
+#SBATCH -n 3                    # 3进程（原始基线）
 #SBATCH -t 1:00:00
 #SBATCH -o log_%j.out
 #SBATCH --exclusive
